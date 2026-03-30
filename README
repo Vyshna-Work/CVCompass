@@ -1,0 +1,98 @@
+(The file `c:\Users\vyshn\OneDrive\Documents\CVCompass\README` exists, but is empty)
+CVCompass
+=========
+
+**Apply anywhere. Stand out everywhere.**
+
+CVCompass is a Flask web application that helps users generate country-specific CVs/Resumes with the correct formatting, sections, and style for the United States, United Kingdom, and Netherlands. Users fill out a simple form, and CVCompass generates a downloadable PDF tailored to the selected country’s requirements.
+
+---
+
+## Features
+
+- 🌍 **Country-Specific Formatting:** Supports USA, UK, and Netherlands, each with unique CV/resume rules (photo, page limit, tone, etc.)
+- 📝 **Easy Form:** User-friendly web form for entering personal, educational, and professional details
+- 🎨 **Customizable Style:** Choose sidebar color and font style for your CV
+- 📄 **PDF Generation:** Instantly download a professional PDF CV
+- 🌗 **Dark Mode:** Toggle dark mode for a comfortable editing experience
+
+---
+
+## Project Structure
+
+```
+app.py                # Main Flask application
+models/               # Core logic: country, user, cv, pdf generator
+templates/            # HTML templates (Jinja2)
+static/css/           # Stylesheets
+data/                 # Country data (JSON)
+output/               # Generated PDFs
+```
+
+---
+
+## Getting Started
+
+### Prerequisites
+- Python 3.8+
+- pip
+
+### Installation
+1. Clone the repository:
+	```bash
+	git clone REPO 
+	cd CVCompass
+	```
+2. Install dependencies:
+	```bash
+	pip install flask reportlab
+	```
+
+### Running the App
+```bash
+python app.py
+```
+Visit [http://localhost:5000](http://localhost:5000) in your browser.
+
+---
+
+## Usage
+1. Select your target country on the home page.
+2. Fill in your details in the CV form (fields adapt to country rules).
+3. Customize sidebar color and font style.
+4. Download your country-specific CV as a PDF.
+
+---
+
+## Supported Countries & Rules
+
+| Country      | Document | Max Pages | Photo | DOB | Nationality | Tone                      |
+|--------------|----------|-----------|-------|-----|-------------|---------------------------|
+| USA          | Resume   | 1         | No    | No  | No          | Concise and punchy        |
+| UK           | CV       | 2         | No    | No  | No          | Professional and formal   |
+| Netherlands  | CV       | 2         | Yes   | Yes | Yes         | Skills focused and direct |
+
+---
+
+## File Overview
+
+- **app.py**: Main Flask app, routes, and logic
+- **models/country.py**: Country-specific CV rules
+- **models/user.py**: User data model
+- **models/cv.py**: CV builder logic
+- **models/pdf_generator.py**: PDF generation using ReportLab
+- **templates/**: Jinja2 HTML templates
+- **static/css/style.css**: Main stylesheet
+
+---
+
+## Credits
+
+- Built with [Flask](https://flask.palletsprojects.com/) and [ReportLab](https://www.reportlab.com/)
+- Created by Vyshna-Work for Solo Innovate
+
+---
+
+## License
+
+MIT License. See LICENSE file for details.

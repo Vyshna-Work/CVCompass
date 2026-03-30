@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CVCompass — Apply anywhere. Stand out everywhere.</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<!-- Dark mode toggle button -->
+<button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+
+    <!-- Main container -->
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <h1>CVCompass</h1>
+            <p class="tagline">Apply anywhere. Stand out everywhere.</p>
+        </div>
+
+        <!-- Country selection section -->
+        <div class="section">
+            <h2>Select Your Target Country</h2>
+            <p>Choose the country you are applying to — CVCompass will apply the correct formatting automatically.</p>
+        </div>
+
+        <!-- Country cards -->
+        <div class="countries-grid">
+
+            {% for code, country in countries.items() %}
+            <a href="{{ url_for('cv_form', country_code=code) }}" class="country-card">
+                <div class="country-name">{{ country.name }}</div>
+                <div class="country-details">
+                    <span>{{ country.cv_name }}</span>
+                    <span>Max {{ country.max_pages }} page(s)</span>
+                    <span>Photo: {{ "Required" if country.photo_required else "Not Required" }}</span>
+                </div>
+            </a>
+            {% endfor %}
+
+        </div>
+
+    </div>
+    
+    <script>
+    // Check if dark mode was previously enabled and apply it
+    if (localStorage.getItem("darkMode") === "enabled") {
+        document.body.classList.add("dark-mode");
+        document.querySelector(".dark-mode-toggle").textContent = "☀️ Light Mode";
+    }
+
+    // Toggle dark mode on and off
+    function toggleDarkMode() {
+        document.body.classList.toggle("dark-mode");
+        const btn = document.querySelector(".dark-mode-toggle");
+        if (document.body.classList.contains("dark-mode")) {
+            localStorage.setItem("darkMode", "enabled");
+            btn.textContent = "☀️ Light Mode";
+        } else {
+            localStorage.setItem("darkMode", "disabled");
+            btn.textContent = "🌙 Dark Mode";
+        }
+    }
+    </script>
+
+
+</body>
+</html>
