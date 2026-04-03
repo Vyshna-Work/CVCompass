@@ -8,7 +8,7 @@
 </head>
 <body>
 
-    <!-- Dark mode toggle button -->
+<!-- Dark mode toggle button -->
 <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙 Dark Mode</button>
 
     <!-- Main container -->
@@ -142,44 +142,48 @@
             </div>
 
             <!-- CV Customisation Section -->
-             <div class="form-section">
+            <div class="form-section">
                 <h2>Customise Your CV</h2>
+
+                <!-- Sidebar Colour Picker -->
                 <div class="form-group">
                     <label>Sidebar Colour</label>
                     <div class="colour-options">
                         <label class="colour-option">
                             <input type="radio" name="sidebar_colour" value="#2C3E50" checked>
                             <span class="colour-swatch" style="background:#2C3E50"></span>
-                Navy
-            </label>
-            <label class="colour-option">
-                <input type="radio" name="sidebar_colour" value="#1A5276">
-                <span class="colour-swatch" style="background:#1A5276"></span>
-                Blue
-            </label>
-            <label class="colour-option">
-                <input type="radio" name="sidebar_colour" value="#1E8449">
-                <span class="colour-swatch" style="background:#1E8449"></span>
-                Green
-            </label>
-            <label class="colour-option">
-                <input type="radio" name="sidebar_colour" value="#6E2F8A">
-                <span class="colour-swatch" style="background:#6E2F8A"></span>
-                Purple
-            </label>
-            <label class="colour-option">
-                <input type="radio" name="sidebar_colour" value="#922B21">
-                <span class="colour-swatch" style="background:#922B21"></span>
-                Red
-            </label>
-            <label class="colour-option">
-                <input type="radio" name="sidebar_colour" value="#784212">
-                <span class="colour-swatch" style="background:#784212"></span>
-                Brown
-            </label>
+                            Navy
+                        </label>
+                        <label class="colour-option">
+                            <input type="radio" name="sidebar_colour" value="#1A5276">
+                            <span class="colour-swatch" style="background:#1A5276"></span>
+                            Blue
+                        </label>
+                        <label class="colour-option">
+                            <input type="radio" name="sidebar_colour" value="#1E8449">
+                            <span class="colour-swatch" style="background:#1E8449"></span>
+                            Green
+                        </label>
+                        <label class="colour-option">
+                            <input type="radio" name="sidebar_colour" value="#6E2F8A">
+                            <span class="colour-swatch" style="background:#6E2F8A"></span>
+                            Purple
+                        </label>
+                        <label class="colour-option">
+                            <input type="radio" name="sidebar_colour" value="#922B21">
+                            <span class="colour-swatch" style="background:#922B21"></span>
+                            Red
+                        </label>
+                        <label class="colour-option">
+                            <input type="radio" name="sidebar_colour" value="#784212">
+                            <span class="colour-swatch" style="background:#784212"></span>
+                            Brown
+                        </label>
+                    </div>
+                </div>
 
-            <!-- Font Style Selector -->
-                <div class="form-group" style="margin-top: 20px;">
+                <!-- Font Style Selector -->
+                <div class="form-group" style="margin-top: 24px;">
                     <label>Font Style</label>
                     <div class="colour-options">
                         <label class="colour-option">
@@ -199,9 +203,8 @@
                         </label>
                     </div>
                 </div>
-        </div>
-    </div>
-</div>
+
+            </div>
 
             <!-- Submit button -->
             <div class="form-submit">
@@ -213,24 +216,24 @@
     </div>
 
     <script>
-    // Check if dark mode was previously enabled and apply it
-    if (localStorage.getItem("darkMode") === "enabled") {
-        document.body.classList.add("dark-mode");
-        document.querySelector(".dark-mode-toggle").textContent = "☀️ Light Mode";
-    }
-
-    // Toggle dark mode on and off
-    function toggleDarkMode() {
-        document.body.classList.toggle("dark-mode");
-        const btn = document.querySelector(".dark-mode-toggle");
-        if (document.body.classList.contains("dark-mode")) {
-            localStorage.setItem("darkMode", "enabled");
-            btn.textContent = "☀️ Light Mode";
-        } else {
-            localStorage.setItem("darkMode", "disabled");
-            btn.textContent = "🌙 Dark Mode";
+        // Check if dark mode was previously enabled and apply it
+        if (localStorage.getItem("darkMode") === "enabled") {
+            document.body.classList.add("dark-mode");
+            document.querySelector(".dark-mode-toggle").textContent = "☀️ Light Mode";
         }
-    }
+
+        // Toggle dark mode on and off
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+            const btn = document.querySelector(".dark-mode-toggle");
+            if (document.body.classList.contains("dark-mode")) {
+                localStorage.setItem("darkMode", "enabled");
+                btn.textContent = "☀️ Light Mode";
+            } else {
+                localStorage.setItem("darkMode", "disabled");
+                btn.textContent = "🌙 Dark Mode";
+            }
+        }
     </script>
 
 </body>

@@ -26,45 +26,72 @@
             <p>Choose the country you are applying to — CVCompass will apply the correct formatting automatically.</p>
         </div>
 
-        <!-- Country cards -->
-        <div class="countries-grid">
+        <!-- Country cards — stacked vertically -->
+        <div class="countries-list">
 
-            {% for code, country in countries.items() %}
-            <a href="{{ url_for('cv_form', country_code=code) }}" class="country-card">
-                <div class="country-name">{{ country.name }}</div>
-                <div class="country-details">
-                    <span>{{ country.cv_name }}</span>
-                    <span>Max {{ country.max_pages }} page(s)</span>
-                    <span>Photo: {{ "Required" if country.photo_required else "Not Required" }}</span>
+            <a href="{{ url_for('cv_form', country_code='usa') }}" class="country-card country-usa">
+                <div class="country-flag">🇺🇸</div>
+                <div class="country-info">
+                    <div class="country-name">United States</div>
+                    <div class="country-details">
+                        <span>Resume</span>
+                        <span>Max 1 page</span>
+                        <span>Photo: Not Required</span>
+                    </div>
                 </div>
+                <div class="country-arrow">→</div>
             </a>
-            {% endfor %}
+
+            <a href="{{ url_for('cv_form', country_code='uk') }}" class="country-card country-uk">
+                <div class="country-flag">🇬🇧</div>
+                <div class="country-info">
+                    <div class="country-name">United Kingdom</div>
+                    <div class="country-details">
+                        <span>CV</span>
+                        <span>Max 2 pages</span>
+                        <span>Photo: Not Required</span>
+                    </div>
+                </div>
+                <div class="country-arrow">→</div>
+            </a>
+
+            <a href="{{ url_for('cv_form', country_code='netherlands') }}" class="country-card country-nl">
+                <div class="country-flag">🇳🇱</div>
+                <div class="country-info">
+                    <div class="country-name">Netherlands</div>
+                    <div class="country-details">
+                        <span>CV</span>
+                        <span>Max 2 pages</span>
+                        <span>Photo: Required</span>
+                    </div>
+                </div>
+                <div class="country-arrow">→</div>
+            </a>
 
         </div>
 
     </div>
-    
+
     <script>
-    // Check if dark mode was previously enabled and apply it
-    if (localStorage.getItem("darkMode") === "enabled") {
-        document.body.classList.add("dark-mode");
-        document.querySelector(".dark-mode-toggle").textContent = "☀️ Light Mode";
-    }
-
-    // Toggle dark mode on and off
-    function toggleDarkMode() {
-        document.body.classList.toggle("dark-mode");
-        const btn = document.querySelector(".dark-mode-toggle");
-        if (document.body.classList.contains("dark-mode")) {
-            localStorage.setItem("darkMode", "enabled");
-            btn.textContent = "☀️ Light Mode";
-        } else {
-            localStorage.setItem("darkMode", "disabled");
-            btn.textContent = "🌙 Dark Mode";
+        // Check if dark mode was previously enabled and apply it
+        if (localStorage.getItem("darkMode") === "enabled") {
+            document.body.classList.add("dark-mode");
+            document.querySelector(".dark-mode-toggle").textContent = "☀️ Light Mode";
         }
-    }
-    </script>
 
+        // Toggle dark mode on and off
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+            const btn = document.querySelector(".dark-mode-toggle");
+            if (document.body.classList.contains("dark-mode")) {
+                localStorage.setItem("darkMode", "enabled");
+                btn.textContent = "☀️ Light Mode";
+            } else {
+                localStorage.setItem("darkMode", "disabled");
+                btn.textContent = "🌙 Dark Mode";
+            }
+        }
+    </script>
 
 </body>
 </html>
