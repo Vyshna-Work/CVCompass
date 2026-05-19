@@ -71,6 +71,9 @@ Visit [http://localhost:5000](http://localhost:5000) in your browser.
 | USA          | Resume   | 1         | No    | No  | No          | Concise and punchy        |
 | UK           | CV       | 2         | No    | No  | No          | Professional and formal   |
 | Netherlands  | CV       | 2         | Yes   | Yes | Yes         | Skills focused and direct |
+| Germany      | CV       | 2         | Yes   | Yes | Yes         | Formal and structured     |
+| Japan        | CV       | 1         | Yes   | Yes | Yes         | Formal and traditional    |
+| Australia    | CV       | 3         | No    | No  | No          | Friendly and personable   |
 
 ---
 
