@@ -16,9 +16,29 @@
 
         <!-- Header -->
         <div class="header">
-            <a href="/" class="back-link">← Back to Countries</a>
+            <a href="{{ url_for('index') }}" class="back-link">← Back to Countries</a>
             <h1>CVCompass</h1>
             <p class="tagline">{{ country.name }} {{ country.cv_name }} Builder</p>
+        </div>
+
+        <!-- Upload Existing CV Section -->
+        <div class="form-section" style="border: 2px dashed #1B5E20;">
+            <h2>📂 Upload Existing CV — Auto Fill</h2>
+            <p class="field-note" style="margin-bottom: 16px;">
+                Already have a CV? Upload your Word document and we'll automatically fill in the form for you. You can review and edit before downloading.
+            </p>
+            <div class="form-group">
+                <label>Upload your existing CV</label>
+                <input type="file" id="existing_cv_input" accept=".docx,.pdf">
+                <p class="field-note">Supported formats: Word Document (.docx) or PDF (.pdf)</p>
+            </div>
+            <div class="form-submit" style="margin-top: 10px; margin-bottom: 0;">
+                <button type="button" onclick="uploadAndFill()" style="background: #1B5E20; color: white; border: none; padding: 12px 32px; font-size: 15px; border-radius: 8px; cursor: pointer;">
+                    Auto Fill Form →
+                </button>
+            </div>
+            <!-- Status message -->
+            <p id="upload-status" style="margin-top: 12px; font-size: 13px; color: #1B5E20; display: none;"></p>
         </div>
 
         <!-- Country rules notice -->
@@ -35,7 +55,7 @@
         </div>
 
         <!-- CV Form -->
-        <form action="{{ url_for('generate_cv', country_code=country_code) }}" method="POST">
+        <form action="{{ url_for('generate_cv', country_code=country_code) }}" method="POST" enctype="multipart/form-data" autocomplete="off">
 
             <!-- Personal Details Section -->
             <div class="form-section">
@@ -44,49 +64,50 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>First Name *</label>
-                        <input type="text" name="first_name" required placeholder="e.g. Vyshna">
+                        <input type="text" id="first_name" name="first_name" required>
                     </div>
                     <div class="form-group">
                         <label>Last Name *</label>
-                        <input type="text" name="last_name" required placeholder="e.g. Smith">
+                        <input type="text" id="last_name" name="last_name" required>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label>Email Address *</label>
-                        <input type="email" name="email" required placeholder="e.g. vyshna@email.com">
+                        <input type="email" id="email" name="email" required>
                     </div>
                     <div class="form-group">
                         <label>Phone Number *</label>
-                        <input type="text" name="phone" required placeholder="e.g. +31 612345678">
+                        <input type="text" id="phone" name="phone" required>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label>Address *</label>
-                    <input type="text" name="address" required placeholder="e.g. Amsterdam, Netherlands">
+                    <input type="text" id="address" name="address" required>
                 </div>
 
                 <!-- Optional fields — shown only if country requires them -->
                 {% if country.include_dob %}
                 <div class="form-group">
                     <label>Date of Birth <span class="required-tag">Required for {{ country.name }}</span></label>
-                    <input type="date" name="dob">
+                    <input type="date" id="dob" name="dob">
                 </div>
                 {% endif %}
 
                 {% if country.include_nationality %}
                 <div class="form-group">
                     <label>Nationality <span class="required-tag">Required for {{ country.name }}</span></label>
-                    <input type="text" name="nationality" placeholder="e.g. Indian">
+                    <input type="text" id="nationality" name="nationality">
                 </div>
                 {% endif %}
 
                 {% if country.photo_required %}
                 <div class="form-group">
                     <label>Photo <span class="required-tag">Required for {{ country.name }}</span></label>
-                    <p class="field-note">Please attach a professional photo to your printed CV as required by {{ country.name }} standards.</p>
+                    <input type="file" name="photo" accept="image/jpeg, image/png, image/jpg, application/pdf">
+                    <p class="field-note">Upload a professional photo as required by {{ country.name }} standards. Accepted formats: JPG, JPEG, PNG, PDF.</p>
                 </div>
                 {% endif %}
 
@@ -97,7 +118,12 @@
                 <h2>Profile Summary</h2>
                 <div class="form-group">
                     <label>Write a short professional summary *</label>
-                    <textarea name="summary" rows="4" required placeholder="e.g. First year Computer Science student with a passion for problem solving and software development..."></textarea>
+                    <textarea id="summary" name="summary" rows="4" required></textarea>
+                    <button type="button" onclick="generateSummary()" style="margin-top: 10px; background: #1B5E20; color: white; border: none; padding: 10px 24px; font-size: 14px; border-radius: 8px; cursor: pointer; align-self: flex-start;">
+    ✨ Generate Summary with AI
+</button>
+<p class="field-note" style="margin-top: 6px;">Not happy with it? Click again for a different version.</p>
+<p id="summary-status" style="margin-top: 8px; font-size: 13px; color: #1B5E20; display: none;"></p>
                 </div>
             </div>
 
@@ -106,7 +132,7 @@
                 <h2>Education</h2>
                 <div class="form-group">
                     <label>Education History *</label>
-                    <textarea name="education" rows="4" required placeholder="Enter each entry on a new line&#10;e.g. BSc Computer Science — University of Amsterdam, 2024 - Present&#10;A Levels — School Name, 2022 - 2024"></textarea>
+                    <textarea id="education" name="education" rows="4" required></textarea>
                     <p class="field-note">Enter each education entry on a new line.</p>
                 </div>
             </div>
@@ -116,7 +142,7 @@
                 <h2>Work Experience</h2>
                 <div class="form-group">
                     <label>Work Experience</label>
-                    <textarea name="experience" rows="4" placeholder="Enter each entry on a new line&#10;e.g. Intern — Tech Company, 2023&#10;Volunteer — Organisation, 2022"></textarea>
+                    <textarea id="experience" name="experience" rows="4"></textarea>
                     <p class="field-note">Enter each experience entry on a new line. Leave blank if not applicable.</p>
                 </div>
             </div>
@@ -126,7 +152,7 @@
                 <h2>Skills</h2>
                 <div class="form-group">
                     <label>Skills *</label>
-                    <input type="text" name="skills" required placeholder="e.g. Python, Java, SQL, Flask, Problem Solving">
+                    <input type="text" id="skills" name="skills" required>
                     <p class="field-note">Separate each skill with a comma.</p>
                 </div>
             </div>
@@ -136,7 +162,7 @@
                 <h2>Languages</h2>
                 <div class="form-group">
                     <label>Languages you speak *</label>
-                    <input type="text" name="languages" required placeholder="e.g. English, Dutch, Hindi">
+                    <input type="text" id="languages" name="languages" required>
                     <p class="field-note">Separate each language with a comma.</p>
                 </div>
             </div>
@@ -216,6 +242,10 @@
     </div>
 
     <script>
+        // ============================================
+        // Dark Mode Toggle
+        // ============================================
+
         // Check if dark mode was previously enabled and apply it
         if (localStorage.getItem("darkMode") === "enabled") {
             document.body.classList.add("dark-mode");
@@ -232,6 +262,132 @@
             } else {
                 localStorage.setItem("darkMode", "disabled");
                 btn.textContent = "🌙 Dark Mode";
+            }
+        }
+
+        // ============================================
+        // Upload Existing CV and Auto Fill Form
+        // ============================================
+
+        async function uploadAndFill() {
+            const fileInput = document.getElementById("existing_cv_input");
+            const statusMsg = document.getElementById("upload-status");
+
+            // Check if a file was selected
+            if (!fileInput.files[0]) {
+                statusMsg.style.display = "block";
+                statusMsg.style.color = "#C0392B";
+                statusMsg.textContent = "Please select a file first.";
+                return;
+            }
+
+            // Show loading message
+            statusMsg.style.display = "block";
+            statusMsg.style.color = "#1B5E20";
+            statusMsg.textContent = "Reading your CV... please wait.";
+
+            // Create form data with the uploaded file
+            const formData = new FormData();
+            formData.append("existing_cv", fileInput.files[0]);
+
+            try {
+                // Send file to the upload route
+                const response = await fetch("/upload-cv", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                // Check for errors
+                if (data.error) {
+                    statusMsg.style.color = "#C0392B";
+                    statusMsg.textContent = `Error: ${data.error}`;
+                    return;
+                }
+
+                // Auto fill the form fields with extracted data
+                if (data.first_name) document.getElementById("first_name").value = data.first_name;
+                if (data.last_name) document.getElementById("last_name").value = data.last_name;
+                if (data.email) document.getElementById("email").value = data.email;
+                if (data.phone) document.getElementById("phone").value = data.phone;
+                if (data.address) document.getElementById("address").value = data.address;
+                if (data.summary) document.getElementById("summary").value = data.summary;
+                if (data.education) document.getElementById("education").value = data.education;
+                if (data.experience) document.getElementById("experience").value = data.experience;
+                if (data.skills) document.getElementById("skills").value = data.skills;
+                if (data.languages) document.getElementById("languages").value = data.languages;
+
+                // Show success message
+                statusMsg.style.color = "#1B5E20";
+                statusMsg.textContent = "✅ Form filled successfully! Please review and edit your details before downloading.";
+
+            } catch (error) {
+                statusMsg.style.color = "#C0392B";
+                statusMsg.textContent = "Something went wrong. Please try again.";
+            }
+        }
+
+        // ============================================
+        // Generate AI Profile Summary
+        // ============================================
+
+        async function generateSummary() {
+            const statusMsg = document.getElementById("summary-status");
+
+            // Get current form values
+            const firstName = document.getElementById("first_name").value;
+            const skills = document.getElementById("skills").value;
+            const education = document.getElementById("education").value;
+            const experience = document.getElementById("experience").value;
+            const languages = document.getElementById("languages").value;
+
+            // Check minimum details are filled
+            if (!firstName || !skills || !education) {
+                statusMsg.style.display = "block";
+                statusMsg.style.color = "#C0392B";
+                statusMsg.textContent = "Please fill in your name, education and skills first.";
+                return;
+            }
+
+            // Show loading message
+            statusMsg.style.display = "block";
+            statusMsg.style.color = "#1B5E20";
+            statusMsg.textContent = "Generating your summary... please wait.";
+
+            try {
+                // Send details to the summary generator
+                const response = await fetch("/generate-summary", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        first_name: firstName,
+                        skills: skills,
+                        education: education,
+                        experience: experience,
+                        languages: languages,
+                        country: "{{ country.name }}",
+                        tone: "{{ country.tone }}"
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    statusMsg.style.color = "#C0392B";
+                    statusMsg.textContent = `Error: ${data.error}`;
+                    return;
+                }
+
+                // Fill in the summary field
+                document.getElementById("summary").value = data.summary;
+
+                statusMsg.style.color = "#1B5E20";
+                statusMsg.textContent = "✅ Summary generated! Feel free to edit it.";
+
+            } catch (error) {
+                statusMsg.style.color = "#C0392B";
+                statusMsg.textContent = "Something went wrong. Please try again.";
             }
         }
     </script>
