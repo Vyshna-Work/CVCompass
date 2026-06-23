@@ -1,101 +1,132 @@
-(The file `c:\Users\vyshn\OneDrive\Documents\CVCompass\README` exists, but is empty)
 CVCompass
-=========
 
-**Apply anywhere. Stand out everywhere.**
+Apply anywhere. Stand out everywhere.
 
-CVCompass is a Flask web application that helps users generate country-specific CVs/Resumes with the correct formatting, sections, and style for the United States, United Kingdom, and Netherlands. Users fill out a simple form, and CVCompass generates a downloadable PDF tailored to the selected country’s requirements.
+CVCompass is a Flask web application that automatically generates country-specific CVs as downloadable PDFs. Every country has different CV rules — CVCompass handles all of that automatically, so the user just fills in their details and downloads a professionally formatted CV in seconds.
 
----
+The project is built using Python and Flask, following an Object Oriented Programming approach with five classes. It also integrates two AI features powered by the OpenAI API.
 
-## Features
+Live at: cvcompass.pythonanywhere.com
 
-- 🌍 **Country-Specific Formatting:** Supports USA, UK, and Netherlands, each with unique CV/resume rules (photo, page limit, tone, etc.)
-- 📝 **Easy Form:** User-friendly web form for entering personal, educational, and professional details
-- 🎨 **Customizable Style:** Choose sidebar color and font style for your CV
-- 📄 **PDF Generation:** Instantly download a professional PDF CV
-- 🌗 **Dark Mode:** Toggle dark mode for a comfortable editing experience
 
----
+Features
 
-## Project Structure
 
-```
-app.py                # Main Flask application
-models/               # Core logic: country, user, cv, pdf generator
-templates/            # HTML templates (Jinja2)
-static/css/           # Stylesheets
-data/                 # Country data (JSON)
-output/               # Generated PDFs
-```
+Country-specific CV formatting for 6 countries — USA, UK, Netherlands, Germany, Japan and Australia
+AI CV Reader — upload an existing CV and have all form fields filled in automatically using OpenAI
+AI Profile Summary Generator — generate a unique, tailored professional summary based on your details and target country tone
+Customisable sidebar colour and font style
+Two column PDF layout with photo support for countries that require it
+Dark mode toggle
+Fully deployed and accessible online via PythonAnywhere
 
----
 
-## Getting Started
 
-### Prerequisites
-- Python 3.8+
-- pip
+Supported Countries
 
-### Installation
-1. Clone the repository:
-	```bash
-	git clone REPO 
-	cd CVCompass
-	```
-2. Install dependencies:
-	```bash
-	pip install flask reportlab
-	```
+CountryDocumentMax PagesPhotoDOBNationalityToneUSAResume1NoNoNoConcise and punchyUKCV2NoNoNoProfessional and formalNetherlandsCV2YesYesYesSkills focused and directGermanyLebenslauf2YesYesYesFormal and structuredJapanRirekisho1YesYesYesFormal and traditionalAustraliaResume3NoNoNoFriendly and personable
 
-### Running the App
-```bash
-python app.py
-```
-Visit [http://localhost:5000](http://localhost:5000) in your browser.
 
----
+AI Features
 
-## Usage
-1. Select your target country on the home page.
-2. Fill in your details in the CV form (fields adapt to country rules).
-3. Customize sidebar color and font style.
-4. Download your country-specific CV as a PDF.
+AI CV Reader
 
----
+The user uploads an existing CV as a Word document or PDF. The CVReader class reads the document, sends the text to OpenAI GPT-4o-mini with a structured prompt, and receives back a JSON object containing all extracted details. These are then used to auto fill the entire form.
 
-## Supported Countries & Rules
+AI Profile Summary Generator
 
-| Country      | Document | Max Pages | Photo | DOB | Nationality | Tone                      |
-|--------------|----------|-----------|-------|-----|-------------|---------------------------|
-| USA          | Resume   | 1         | No    | No  | No          | Concise and punchy        |
-| UK           | CV       | 2         | No    | No  | No          | Professional and formal   |
-| Netherlands  | CV       | 2         | Yes   | Yes | Yes         | Skills focused and direct |
-| Germany      | CV       | 2         | Yes   | Yes | Yes         | Formal and structured     |
-| Japan        | CV       | 1         | Yes   | Yes | Yes         | Formal and traditional    |
-| Australia    | CV       | 3         | No    | No  | No          | Friendly and personable   |
+Once the user has filled in their details, they can click Generate Summary with AI. Flask collects the form data, builds a personalised prompt including the user's name, skills, education, experience and the target country's tone, and sends it to OpenAI. The summary is returned and automatically filled into the summary field. The user can click again to get a completely different version.
 
----
 
-## File Overview
+Project Structure
 
-- **app.py**: Main Flask app, routes, and logic
-- **models/country.py**: Country-specific CV rules
-- **models/user.py**: User data model
-- **models/cv.py**: CV builder logic
-- **models/pdf_generator.py**: PDF generation using ReportLab
-- **templates/**: Jinja2 HTML templates
-- **static/css/style.css**: Main stylesheet
+app.py                   # Main Flask application and all routes
+models/
+    country.py           # Country class — stores CV rules per country
+    user.py              # User class — stores personal details from form
+    cv.py                # CV class — combines User and Country
+    pdf_generator.py     # PDFGenerator class — builds the PDF using ReportLab
+    cv_reader.py         # CVReader class — AI powered CV reading using OpenAI
+templates/
+    home.html            # Landing page
+    index.html           # Country selection page
+    cv_form.html         # CV form with AI features
+static/css/
+    style.css            # Main stylesheet including dark mode
+data/
+    countries.json       # Country data
+output/                  # Generated PDFs (not tracked in git)
 
----
 
-## Credits
+OOP Class Structure
 
-- Built with [Flask](https://flask.palletsprojects.com/) and [ReportLab](https://www.reportlab.com/)
-- Created by Vyshna-Work for Solo Innovate
+The project uses five classes each with a single responsibility:
 
----
 
-## License
+Country — stores the CV formatting rules for each supported country
+User — stores the personal and professional details entered by the user
+CV — combines a User object and a Country object into a formatted CV
+PDFGenerator — takes a CV object and generates a two column PDF file
+CVReader — reads an uploaded CV file and uses OpenAI to extract key details
 
-MIT License. See LICENSE file for details.
+
+
+Getting Started
+
+Prerequisites
+
+
+Python 3.10 or higher
+pip
+An OpenAI API key
+
+
+Installation
+
+
+Clone the repository:
+
+
+bashgit clone https://github.com/Vyshna-Work/CVCompass.git
+cd CVCompass
+
+
+Install dependencies:
+
+
+bashpip install flask reportlab python-docx PyMuPDF openai python-dotenv
+
+
+Create a .env file in the root folder and add your OpenAI API key:
+
+
+OPENAI_API_KEY=your_api_key_here
+
+
+Run the app:
+
+
+bashpython app.py
+
+
+Visit http://localhost:5000 in your browser.
+
+
+
+Deployment
+
+CVCompass is deployed on PythonAnywhere and accessible at:
+cvcompass.pythonanywhere.com
+
+No installation required — works in any browser for free.
+
+
+Libraries and Frameworks
+
+LibraryPurposeFlaskWeb framework — routes and responsesReportLabPDF generation — two column layoutpython-docxRead uploaded Word CV filesPyMuPDFRead uploaded PDF CV filesopenaiAI framework — both AI featurespython-dotenvLoad API key securely from .env
+
+
+Credits
+
+Built with Flask, ReportLab and OpenAI API.
+Created by Vyshna ChandraA Puthanveettil for the Solo Innovate project.
